@@ -1,0 +1,232 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EDUGAMERS</title></title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#07132a;
+      --accent1:#7c5cff;
+      --accent2:#00e0b8;
+      --card:#0b1220;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.6);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color-scheme: dark;
+    }/* Reset */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 6%),
+              radial-gradient(900px 500px at 90% 90%, rgba(0,224,184,0.08), transparent 8%),
+            linear-gradient(180deg,var(--bg1),var(--bg2));
+  font-size:16px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:48px 24px;
+}
+
+/* animated background gradient */
+.bg-anim{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+}
+.bg-anim::before,
+.bg-anim::after{
+  content:'';position:absolute;filter:blur(90px);opacity:0.85;
+  width:60vmax;height:60vmax;transform:translate(-30%,-20%);
+  background:conic-gradient(from 120deg at 50% 50%, var(--accent1), var(--accent2));
+  animation:spin 18s linear infinite;
+}
+.bg-anim::after{left:auto;right:-10%;top:50%;animation-duration:28s;opacity:0.6}
+@keyframes spin{from{transform:translate(-30%,-20%) rotate(0deg)}to{transform:translate(-30%,-20%) rotate(360deg)}}
+
+/* Layout */
+.container{max-width:1100px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  display:grid;place-items:center;color:white;font-weight:800;font-size:20px;box-shadow:0 8px 30px rgba(0,0,0,0.45)
+}
+nav a{color:rgba(255,255,255,0.75);text-decoration:none;margin-left:18px;font-weight:600}
+nav a.cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 14px;border-radius:10px;color:#041023}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:center;margin-bottom:64px}
+.hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:18px;padding:34px;box-shadow:0 10px 40px rgba(2,6,23,0.6);backdrop-filter: blur(6px)}
+h1{font-size:clamp(28px,4vw,44px);line-height:1.02;margin-bottom:12px}
+.headline{font-weight:800;letter-spacing:-0.02em}
+.tagline{color:var(--muted);margin-bottom:20px}
+
+/* Typewriter accent */
+.typewriter{
+  display:inline-block;overflow:hidden;white-space:nowrap;border-right:3px solid rgba(255,255,255,0.14);animation:typing 3s steps(30) 1s 1 normal both, blink 700ms steps(30) infinite;
+  font-weight:700;color:transparent;background-clip:text;-webkit-background-clip:text;background-image:linear-gradient(90deg,var(--accent1),var(--accent2));
+  -webkit-text-fill-color:transparent
+}
+@keyframes typing{from{width:0}to{width:100%}}@keyframes blink{50%{border-color:transparent}}
+
+.hero p{color:var(--muted);margin-bottom:18px}
+.btn-row{display:flex;gap:12px}
+.btn{padding:12px 18px;border-radius:12px;font-weight:700;border:0;cursor:pointer;backdrop-filter: blur(4px)}
+.btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#041023;box-shadow:0 10px 30px rgba(124,92,255,0.12);transform:translateZ(0);transition:transform .22s ease,box-shadow .22s}
+.btn-primary:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 18px 40px rgba(124,92,255,0.18)}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+/* feature cards */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 20px rgba(2,6,23,0.6);transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s,filter .35s;transform-origin:center}
+.card:hover{transform:translateY(-14px) rotate(-1deg) scale(1.02);box-shadow:0 30px 60px rgba(3,8,30,0.6);filter:brightness(1.04)}
+.card h3{margin-bottom:8px}
+.muted{color:var(--muted);font-size:0.95rem}
+
+/* Pricing */
+.pricing{display:flex;gap:16px;margin:48px 0}
+.plan{flex:1;padding:22px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.04)}
+.plan .price{font-weight:800;font-size:22px;margin:12px 0}
+
+footer{margin-top:40px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between}
+
+/* floating badge */
+.floating-badge{position:relative;margin-left:auto;width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center}
+.badge{position:relative;background:linear-gradient(135deg,var(--accent2),var(--accent1));padding:10px 14px;border-radius:16px;color:#041023;font-weight:700;box-shadow:0 18px 40px rgba(7,15,30,0.6)}
+.float-blob{position:absolute;right:-60px;top:-40px;width:160px;height:160px;border-radius:50%;filter:blur(30px);opacity:0.65;background:linear-gradient(135deg,var(--accent1),transparent);animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-18px) rotate(6deg)}100%{transform:translateY(0)}}
+
+/* entrance animations */
+.reveal{opacity:0;transform:translateY(18px);animation:reveal .9s cubic-bezier(.2,.9,.2,1) forwards}
+.reveal.delay-1{animation-delay:.25s}.reveal.delay-2{animation-delay:.45s}.reveal.delay-3{animation-delay:.65s}.reveal.delay-4{animation-delay:.85s}
+@keyframes reveal{to{opacity:1;transform:none}}
+
+/* responsive */
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr;}
+  .features{grid-template-columns:repeat(2,1fr)}
+  nav a{display:none}
+}
+@media (max-width:560px){
+  .features{grid-template-columns:1fr}
+  header{flex-direction:column;align-items:flex-start;gap:18px}
+}
+
+  </style>
+</head>
+<body>
+  <div class="bg-anim" aria-hidden="true"></div>
+  <div class="container">
+    <header class="reveal delay-1">
+      <div class="brand">
+        <div class="logo">📖</div>
+        <div>
+          <div style="font-weight:800">EDUGAMERS</div></div>
+          <div style="font-size:12px;color:var(--muted)">Gaming meets education </div>
+        </div>
+      </div>
+    </header><main>
+  <section class="hero">
+    <div class="hero-card reveal delay-2">
+      <div>
+        <h1 class="headline">Convert learners into champions<span class="typewriter">Turn Learning Into a Game.</span></h1>
+        <p class="tagline">All-in-one platform for gamified learning — designed to make education fun and effective</p>
+        <div class="btn-row">
+          <a href="EDUGAMES2.html">
+          <button class="btn btn-primary">Start Learning </button></a>
+        </div>
+      </div>
+
+      <div class="features" style="margin-top:20px">
+        <div class="card reveal delay-3">
+          <h3>Quick Learning Access</h3>
+          <p class="muted">
+ “Access ready-to-use lessons, quizzes, and activities instantly.”</p>
+        </div>
+        <div class="card reveal delay-4">
+          <h3>Smart progress Tracking</h3>
+          <p class="muted">
+Monitor scores, achievements, and growth in real-time.</p>
+        </div>
+        <div class="card reveal delay-4">
+          <h3>Integrations</h3>
+          <p class="muted">Works with schools, online classes, and collaboration tools.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="features" class="reveal delay-2">
+    <h2 style="font-size:20px;margin-bottom:14px">Benefits of EduGamers</h2>
+    <div class="features">
+      <div class="card reveal delay-3">
+        <h3>Engaging Lessons</h3>
+        <p class="muted">
+🎮 Fun activities, quizzes, and puzzles for every subject.</p>
+      </div>
+      <div class="card reveal delay-3">
+        <h3>Achievements & Rewards</h3>
+        <p class="muted">
+🏆 Earn badges, unlock levels, and stay motivated while learning.</p>
+      </div>
+      <div class="card reveal delay-3">
+        <h3>Teacher Dashboard</h3>
+        <p class="muted">📊 Monitor student progress, design custom lessons, and provide feedback.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="reveal delay-3">
+    <h2 style="font-size:20px;margin:28px 0 12px">Pricing</h2>
+    <div class="pricing">
+      <div class="plan">
+        <div style="font-weight:700">........</div>
+        <div class="price">Learning paths</div>
+        <div class="muted">Explore structured roadmaps for every subject — from basics to advanced levels. </div>
+        <div style="margin-top:12px">
+          
+        </div>
+      </div>
+      <div class="plan">
+        <div style="font-weight:700">......</div>
+        <div class="price">Skills Growth</div>
+        <div class="muted">Track how knowledge expands with quizzes, activities, and real-time progress..</div>
+        <div style="margin-top:12px">
+          
+        </div>
+      </div>
+      <div class="plan">
+        <div style="font-weight:700">.......</div>
+        <div class="price">Contact us</div>
+        <div class="muted">7416102831,7661038983</div>
+        <div style="margin-top:12px"><button class="btn btn-ghost"></button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" style="margin-top:20px" class="reveal delay-4">
+    <h2 style="font-size:20px;margin-bottom:12px">Live demo preview</h2>
+    <div style="border-radius:12px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);display:flex;gap:12px;align-items:center;">
+      <div style="flex:1">
+        <div style="font-weight:800">EduGamers — Making learning fun, rewarding, and effective for students everywhere.”
+</div>
+        <div style="color:var(--muted);margin-top:8px">Watch the simulated funnel — every step is actionable.</div>
+      </div>
+  </section>
+
+</main>
+
+<footer class="reveal delay-4">
+  <div>© <span id="year"></span> 2026 EduGamers— Empowering Learning Through Play. All rights reserved.
+
+</div>
+  <div>Made with ❤️ · <span style="color:var(--muted)">Privacy · Terms</span></div>
+</footer>
+
+  </div>  <script>
+    // Small unobtrusive script for current year only (keeps file mostly HTML+CSS)
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script></body>
+</html>

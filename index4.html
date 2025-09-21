@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUGAMERS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .subjects {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px;
+            gap: 20px;
+        }
+        .subject-btn {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            background-color: #ffcc00;
+        }
+        .subject-btn:hover {
+            transform: scale(1.1);
+            background-color: #ff9900;
+        }
+        .notes {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+        }
+        .notes h2 {
+            text-align: center;
+            color: #333;
+        }
+        .notes ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>EDUGAMERS - Quick Notes</header>
+
+<div class="subjects">
+    <button class="subject-btn" onclick="showNotes('Mathematics')">Mathematics</button>
+    <button class="subject-btn" onclick="showNotes('Physics')">Physics</button>
+    <button class="subject-btn" onclick="showNotes('Chemistry')">Chemistry</button>
+    <button class="subject-btn" onclick="showNotes('Computer')">Computer</button>
+</div>
+
+<div class="notes" id="notes">
+    <h2>Welcome to EduGAMES!</h2>
+    <p>Click on a subject above to see important notes and definitions.</p>
+</div>
+
+<script>
+    const notes = {
+      Mathematics: {
+        Algebra: [
+  "Definition: Algebra is the branch of mathematics that uses symbols (letters) to represent numbers.",
+  "Explanation: It helps in solving equations, finding unknown values, and expressing general mathematical relationships.",
+  "Formulas:",
+  "(a + b)² = a² + 2ab + b²",
+  "(a - b)² = a² - 2ab + b²",
+  "a² - b² = (a + b)(a - b)",
+  "Quadratic formula: x = (-b ± √(b² - 4ac)) / 2a",
+  "Discriminant: D = b² - 4ac (tells type of roots)"
+],
+
+Trigonometry: [
+  "Definition: Trigonometry is the study of angles and the relationship between angles and sides of triangles.",
+  "Explanation: It is widely used in geometry, physics, navigation, and engineering to calculate heights, distances, and angles.",
+  "Formulas:",
+  "sin²θ + cos²θ = 1",
+  "1 + tan²θ = sec²θ",
+  "1 + cot²θ = csc²θ",
+  "sin 30° = 1/2, cos 60° = 1/2, tan 45° = 1",
+  "sin(A ± B) = sinAcosB ± cosAsinB",
+  "cos(A ± B) = cosAcosB ∓ sinAsinB",
+  "tan(A ± B) = (tanA ± tanB) / (1 ∓ tanA·tanB)"
+],
+
+Geometry: [
+  "Definition: Geometry is the branch of mathematics that studies shapes, sizes, and properties of figures.",
+  "Explanation: It deals with points, lines, surfaces, and solids. It is useful in construction, design, and architecture.",
+  "Formulas:",
+  "Sum of angles in triangle = 180°",
+  "Exterior angle of triangle = sum of opposite interior angles",
+  "Pythagoras theorem: c² = a² + b²",
+  "Area of circle = πr², Circumference = 2πr",
+  "Area of triangle = 1/2 × base × height",
+  "Heron’s formula = √[s(s-a)(s-b)(s-c)] where s = (a+b+c)/2"
+],
+
+Mensuration: [
+  "Definition: Mensuration is the study of measurement of area, perimeter, surface area, and volume of 2D and 3D figures.",
+  "Explanation: It helps in calculating physical space covered by objects like rooms, containers, buildings, etc.",
+  "Formulas:",
+  "Cube: Volume = a³, Surface area = 6a²",
+  "Cuboid: Volume = l × b × h, Surface area = 2(lb + bh + hl)",
+  "Sphere: Volume = 4/3 πr³, Surface area = 4πr²",
+  "Cone: Volume = 1/3 πr²h, Curved surface area = πrl",
+  "Cylinder: Volume = πr²h, Curved surface area = 2πrh"
+],
+
+Calculus: [
+  "Definition: Calculus is the branch of mathematics that studies change (differentiation) and accumulation (integration).",
+  "Explanation: Differentiation measures rate of change (like speed), and integration measures total accumulation (like area under curve).",
+  "Formulas:",
+  "d/dx(xⁿ) = n·xⁿ⁻¹",
+  "d/dx(sinx) = cosx, d/dx(cosx) = -sinx",
+  "d/dx(e^x) = e^x, d/dx(lnx) = 1/x",
+  "∫ xⁿ dx = (xⁿ⁺¹)/(n+1) + C",
+  "∫ e^x dx = e^x + C",
+  "∫ 1/x dx = ln|x| + C",
+  "∫ sinx dx = -cosx + C",
+  "∫ cosx dx = sinx + C"
+],
+
+Probability: [
+  "Definition: Probability is the measure of likelihood of an event occurring.",
+  "Explanation: It is used in games, predictions, weather forecasts, and risk analysis.",
+  "Formulas:",
+  "Probability (P) = (Favorable outcomes) / (Total outcomes)",
+  "0 ≤ P(E) ≤ 1",
+  "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)",
+  "P(A') = 1 - P(A)",
+  "For independent events: P(A ∩ B) = P(A) × P(B)"
+],
+
+Statistics: [
+  "Definition: Statistics deals with collection, analysis, interpretation, and presentation of data.",
+  "Explanation: It helps in studying trends, averages, and predictions in real-life situations.",
+  "Formulas:",
+  "Mean = (Sum of observations) / (Number of observations)",
+  "Median = Middle value of ordered data",
+  "Mode = Most frequent value",
+  "Variance = Σ(x - mean)² / N",
+  "Standard deviation = √Variance"
+],
+
+Vectors: [
+  "Definition: A vector is a quantity with both magnitude and direction.",
+  "Explanation: Used in physics (forces, velocity), navigation, and computer graphics.",
+  "Formulas:",
+  "If A = (a₁, a₂, a₃), B = (b₁, b₂, b₃)",
+  "Dot product A·B = a₁b₁ + a₂b₂ + a₃b₃",
+  "Cross product A×B = |i  j  k; a₁ a₂ a₃; b₁ b₂ b₃|",
+  "Magnitude of vector |A| = √(a₁² + a₂² + a₃²)"
+],
+
+CoordinateGeometry: [
+  "Definition: Coordinate geometry uses algebraic methods to study geometric figures on a plane.",
+  "Explanation: It combines geometry with algebra to calculate distances, slopes, and equations of curves.",
+  "Formulas:",
+  "Distance formula = √[(x₂ - x₁)² + (y₂ - y₁)²]",
+  "Midpoint formula = ((x₁+x₂)/2, (y₁+y₂)/2)",
+  "Slope of line = (y₂ - y₁)/(x₂ - x₁)",
+  "Equation of line: y - y₁ = m(x - x₁)",
+  "Equation of circle: (x - h)² + (y - k)² = r²"
+],
+
+MatricesDeterminants: [
+  "Definition: Matrices are rectangular arrays of numbers; determinants are special values calculated from square matrices.",
+  "Explanation: Used in solving systems of equations, computer graphics, cryptography, and engineering.",
+  "Formulas:",
+  "Determinant of 2×2: |a b; c d| = ad - bc",
+  "For 3×3 matrix: expand by minors and cofactors",
+  "Inverse of matrix A: A⁻¹ = adj(A)/|A| (if |A| ≠ 0)",
+  "Property: |AB| = |A||B|"
+],
+
+NumberSystem: [
+  "Definition: Number system is the classification of numbers into different sets.",
+  "Explanation: It organizes numbers into categories like natural, whole, integers, rationals, irrationals, and real numbers.",
+  "Types:",
+  "Natural numbers: 1, 2, 3, …",
+  "Whole numbers: 0, 1, 2, 3, …",
+  "Integers: … -2, -1, 0, 1, 2 …",
+  "Rational numbers: p/q form, q ≠ 0",
+  "Irrational numbers: cannot be expressed as p/q (e.g., √2, π)",
+  "Real numbers = Rational + Irrational"
+]
+      },
+
+      Physics: {
+        Mechanics: [
+  "Definition: Mechanics is the branch of physics that deals with motion, forces, and energy of objects.",
+  "Explanation: It studies how objects move (kinematics) and why they move (dynamics) under forces.",
+  "Formulas:",
+  "Newton’s 2nd law: F = ma",
+  "Work = Force × Distance × cosθ",
+  "Power = Work / Time",
+  "Kinetic Energy = 1/2 mv²",
+  "Potential Energy = mgh",
+  "Momentum = mv",
+  "Impulse = Force × Time"
+],
+
+Gravitation: [
+  "Definition: Gravitation is the force of attraction between any two masses in the universe.",
+  "Explanation: It explains planetary motion, weight, satellites, and tides.",
+  "Formulas:",
+  "Newton’s law: F = Gm₁m₂ / r²",
+  "Acceleration due to gravity: g = 9.8 m/s²",
+  "Escape velocity: v = √(2gR)",
+  "Weight: W = mg",
+  "Kepler’s 3rd law: T² ∝ r³"
+],
+
+Waves_and_Sound: [
+  "Definition: Waves are disturbances that transfer energy without transfer of matter.",
+  "Explanation: Sound waves are longitudinal waves traveling through a medium like air.",
+  "Formulas:",
+  "Wave speed: v = fλ",
+  "Frequency: f = 1/T",
+  "Sound speed in air ≈ 343 m/s",
+  "Intensity: I = P/A",
+  "Doppler Effect: Δf = (v ± vo) / (v ∓ vs) × f"
+],
+
+Oscillations: [
+  "Definition: Oscillations are repetitive back-and-forth motions about a mean position.",
+  "Explanation: Simple harmonic motion (SHM) is the simplest oscillatory motion with restoring force ∝ displacement.",
+  "Formulas:",
+  "Displacement: x = A sin(ωt + φ)",
+  "Time Period: T = 2π√(L/g) (pendulum)",
+  "Frequency: f = 1/T",
+  "Restoring force: F = -kx",
+  "Total Energy = 1/2 kA² (constant)"
+],
+
+Heat_and_Thermodynamics: [
+  "Definition: Thermodynamics is the study of heat, work, and energy transformations.",
+  "Explanation: It describes the laws governing heat flow, engines, and entropy.",
+  "Formulas:",
+  "Zeroth law: Thermal equilibrium",
+  "1st law: ΔU = Q - W",
+  "Isothermal: PV = constant",
+  "Adiabatic: PV^γ = constant",
+  "Carnot efficiency: η = 1 - T₂/T₁",
+  "Heat capacity: C = Q/ΔT"
+],
+
+Optics: [
+  "Definition: Optics is the study of light and its interactions with matter.",
+  "Explanation: It covers reflection, refraction, lenses, mirrors, and optical instruments.",
+  "Formulas:",
+  "Lens/Mirror formula: 1/f = 1/v - 1/u",
+  "Magnification: M = v/u or hi/ho",
+  "Power of lens: P = 100/f (cm)",
+  "Snell’s law: n₁sinθ₁ = n₂sinθ₂",
+  "Critical angle: sinC = 1/n"
+],
+
+Electrostatics: [
+  "Definition: Electrostatics is the study of stationary electric charges and forces between them.",
+  "Explanation: It explains electric fields, potential, capacitors, and Gauss’s law.",
+  "Formulas:",
+  "Coulomb’s law: F = kq₁q₂ / r²",
+  "Electric field: E = F/q",
+  "Potential: V = W/q",
+  "Capacitance: C = Q/V",
+  "Gauss’s law: ∮E·dA = q/ε₀"
+],
+
+Electricity_and_Magnetism: [
+  "Definition: It deals with moving charges (current electricity) and magnetic effects.",
+  "Explanation: Covers circuits, Ohm’s law, resistors, magnets, and electromagnetic induction.",
+  "Formulas:",
+  "Ohm’s law: V = IR",
+  "Resistance: R = ρL/A",
+  "Power: P = VI",
+  "Lorentz force: F = q(E + vB)",
+  "Faraday’s law: emf = -dΦ/dt"
+],
+
+Modern_Physics: [
+  "Definition: Modern physics deals with atomic, nuclear, and quantum phenomena.",
+  "Explanation: Includes relativity, quantum mechanics, nuclear physics, and semiconductors.",
+  "Formulas:",
+  "Einstein: E = mc²",
+  "Photon energy: E = hf",
+  "De Broglie wavelength: λ = h/p",
+  "Half-life: N = N₀(1/2)^(t/T½)",
+  "Binding energy: BE = Δm c²"
+]
+      },
+
+      Chemistry: {
+        Atomic_Structure: [
+  "Definition: Study of the structure and behavior of atoms, the basic units of matter.",
+  "Explanation: Atoms consist of protons, neutrons, and electrons; models evolved from Dalton to Quantum model.",
+  "Key Points:",
+  "Dalton’s atomic theory: matter made of indivisible atoms.",
+  "Thomson model: Plum pudding model (electrons in positive sphere).",
+  "Rutherford model: Nucleus at center, electrons revolve.",
+  "Bohr model: Electrons in fixed orbits (quantized).",
+  "Quantum numbers: n, l, m, s describe electron states.",
+  "de Broglie wavelength: λ = h/p",
+  "Heisenberg uncertainty: Δx·Δp ≥ h/4π"
+],
+
+Periodic_Table: [
+  "Definition: Tabular arrangement of elements based on atomic number and properties.",
+  "Explanation: Elements show periodicity in properties like ionization energy, electronegativity, atomic radius.",
+  "Key Trends:",
+  "Atomic radius ↓ down group, ↑ left across period.",
+  "Ionization energy ↑ across period, ↓ down group.",
+  "Electronegativity ↑ across period, ↓ down group.",
+  "Modern periodic law: Properties are periodic functions of atomic number."
+],
+
+Chemical_Bonding: [
+  "Definition: Bonding is the interaction that holds atoms together in compounds.",
+  "Explanation: Includes ionic, covalent, metallic, hydrogen bonding, VSEPR theory.",
+  "Key Points:",
+  "Ionic bond: transfer of electrons (NaCl).",
+  "Covalent bond: sharing of electrons (H₂O).",
+  "Coordinate bond: shared electrons from one atom.",
+  "Bond order: (Nb - Na)/2",
+  "Hybridization: sp, sp², sp³, etc.",
+  "VSEPR: Predicts molecular shapes."
+],
+
+States_of_Matter: [
+  "Definition: Matter exists in solid, liquid, gas, and plasma states.",
+  "Explanation: Properties explained by kinetic theory.",
+  "Formulas:",
+  "Ideal Gas Law: PV = nRT",
+  "Boyle’s Law: P ∝ 1/V (T const.)",
+  "Charles’s Law: V ∝ T (P const.)",
+  "Avogadro’s Law: V ∝ n (P,T const.)",
+  "Real gases deviate → van der Waals equation: (P + a/V²)(V - b) = RT"
+],
+
+Thermodynamics: [
+  "Definition: Study of energy, heat, and work in chemical systems.",
+  "Explanation: Deals with spontaneity, equilibrium, enthalpy, entropy.",
+  "Key Formulas:",
+  "1st Law: ΔU = q + w",
+  "Enthalpy: ΔH = ΔU + PΔV",
+  "Entropy: ΔS = Δq_rev/T",
+  "Gibbs free energy: ΔG = ΔH - TΔS",
+  "ΔG < 0 → spontaneous reaction."
+],
+
+Chemical_Kinetics: [
+  "Definition: Study of reaction rates and factors affecting them.",
+  "Explanation: Explains order, molecularity, and catalysts.",
+  "Formulas:",
+  "Rate law: Rate = k[A]^m[B]^n",
+  "Half-life (1st order): t½ = 0.693/k",
+  "Arrhenius equation: k = Ae^(-Ea/RT)"
+],
+
+Equilibrium: [
+  "Definition: State where forward and backward reactions occur at same rate.",
+  "Explanation: Covers chemical and ionic equilibria.",
+  "Key Points:",
+  "Equilibrium constant: Kc = [products]^coeff / [reactants]^coeff",
+  "Le Chatelier’s principle: System opposes change.",
+  "pH = -log[H⁺]",
+  "Kw = [H⁺][OH⁻] = 1 × 10^-14 at 25°C"
+],
+
+Electrochemistry: [
+  "Definition: Study of chemical processes involving electron transfer.",
+  "Explanation: Includes galvanic cells, electrolysis, Nernst equation.",
+  "Formulas:",
+  "Cell potential: E°cell = E°cathode - E°anode",
+  "ΔG = -nFEcell",
+  "Nernst: E = E° - (0.059/n) log(Q)",
+  "Faraday’s laws of electrolysis: m = ZIt"
+],
+
+Organic_Chemistry: [
+  "Definition: Study of carbon compounds and their reactions.",
+  "Explanation: Covers hydrocarbons, functional groups, mechanisms.",
+  "Key Points:",
+  "Alkanes: CnH₂n+2 (single bonds).",
+  "Alkenes: CnH₂n (double bond).",
+  "Alkynes: CnH₂n-2 (triple bond).",
+  "Aromatic compounds: Benzene, resonance.",
+  "Reactions: Substitution, addition, elimination, oxidation, reduction."
+],
+
+Inorganic_Chemistry: [
+  "Definition: Branch dealing with metals, minerals, and non-organic compounds.",
+  "Explanation: Covers s, p, d, f block elements, coordination compounds.",
+  "Key Topics:",
+  "Coordination number, ligands, Werner’s theory.",
+  "Crystal field theory (CFT).",
+  "Transition metals: variable oxidation states, colored ions, catalysts.",
+  "Lanthanides & Actinides: f-block elements."
+],
+
+Surface_Chemistry: [
+  "Definition: Study of phenomena occurring at interfaces.",
+  "Explanation: Deals with adsorption, catalysis, colloids.",
+  "Key Points:",
+  "Adsorption: accumulation on surface.",
+  "Catalysts: speed up reaction without being consumed.",
+  "Colloids: particles 1–1000 nm dispersed (milk, smoke).",
+  "Emulsions: liquid in liquid (milk)."
+],
+
+Environmental_Chemistry: [
+  "Definition: Study of chemical processes in environment.",
+  "Explanation: Deals with pollution, ozone depletion, green chemistry.",
+  "Key Points:",
+  "Greenhouse gases: CO₂, CH₄, N₂O.",
+  "Ozone depletion: due to CFCs.",
+  "Acid rain: from SO₂, NOx.",
+  "Water pollution: heavy metals, industrial waste."
+]
+     },
+     Computer: {
+        Computer_Basics: [
+  "Definition: Study of computers, their components, and how they process information.",
+  "Explanation: A computer is an electronic device that receives input, processes data, stores information, and produces output.",
+  "Key Points:",
+  "Input Devices: Keyboard, Mouse, Scanner",
+  "Output Devices: Monitor, Printer, Speakers",
+  "Storage Devices: HDD, SSD, Optical disks",
+  "Central Processing Unit (CPU): Executes instructions, includes ALU (Arithmetic Logic Unit), CU (Control Unit)",
+  "Memory: Primary (RAM, ROM), Secondary (HDD, SSD), Cache",
+  "Software: System software (OS), Application software"
+],
+
+Operating_Systems: [
+  "Definition: Software that manages computer hardware and provides services to programs.",
+  "Explanation: OS controls input/output devices, memory, processes, and storage.",
+  "Key Points:",
+  "Types: Single-user, Multi-user, Real-time, Distributed, Network OS",
+  "Functions: Process management, Memory management, File management, Security, Device management",
+  "Popular OS: Windows, Linux, macOS, Android"
+],
+
+Programming_Fundamentals: [
+  "Definition: Writing instructions (code) that a computer can execute.",
+  "Explanation: Programming involves algorithms, data structures, and languages to solve problems.",
+  "Key Points:",
+  "Programming Languages: High-level (Python, Java, C++), Low-level (Assembly)",
+  "Syntax: Rules to write correct code",
+  "Variables: Store data, types include int, float, char, string, boolean",
+  "Operators: Arithmetic (+, -, *, /), Logical (&&, ||, !), Comparison (==, !=, >, <)",
+  "Control Structures: if-else, switch, loops (for, while, do-while)"
+],
+
+Data_Structures: [
+  "Definition: Organized way to store and manage data for efficient access and modification.",
+  "Explanation: Different structures are suited for different types of operations.",
+  "Key Points:",
+  "Array: Fixed-size collection of elements",
+  "Linked List: Nodes connected via pointers",
+  "Stack: LIFO (Last In First Out), Operations: push, pop",
+  "Queue: FIFO (First In First Out), Operations: enqueue, dequeue",
+  "Tree: Hierarchical structure, Root, Parent, Child",
+  "Graph: Nodes (vertices) and edges",
+  "Hash Table: Key-value pairs, fast lookup"
+],
+
+Algorithms: [
+  "Definition: Step-by-step procedure to solve a problem or perform a task.",
+  "Explanation: Algorithms optimize performance and resource usage.",
+  "Key Points:",
+  "Complexity: Time complexity (O(n)), Space complexity",
+  "Sorting: Bubble, Selection, Insertion, Merge, Quick",
+  "Searching: Linear search, Binary search",
+  "Recursion: Function calls itself",
+  "Greedy, Divide & Conquer, Dynamic Programming, Backtracking methods"
+],
+
+Databases: [
+  "Definition: Organized collection of data that can be easily accessed, managed, and updated.",
+  "Explanation: DBMS (Database Management System) helps users interact with databases efficiently.",
+  "Key Points:",
+  "DBMS Examples: MySQL, PostgreSQL, Oracle, MongoDB",
+  "Tables, Rows (records), Columns (fields)",
+  "Primary Key, Foreign Key",
+  "SQL Commands: SELECT, INSERT, UPDATE, DELETE, CREATE, DROP",
+  "Normalization: 1NF, 2NF, 3NF to reduce redundancy"
+],
+
+Computer_Networks: [
+  "Definition: Interconnection of computers to share data and resources.",
+  "Explanation: Networks enable communication, file sharing, and internet access.",
+  "Key Points:",
+  "Types: LAN, WAN, MAN, PAN",
+  "Topology: Star, Bus, Ring, Mesh, Hybrid",
+  "Protocols: TCP/IP, HTTP, FTP, SMTP",
+  "OSI Model Layers: Physical, Data Link, Network, Transport, Session, Presentation, Application",
+  "IP Addressing: IPv4, IPv6, Subnetting",
+  "Devices: Router, Switch, Hub, Modem, Access Point"
+],
+
+Cybersecurity: [
+  "Definition: Protecting computer systems and networks from digital attacks.",
+  "Explanation: Security ensures confidentiality, integrity, and availability of data.",
+  "Key Points:",
+  "Types of Threats: Malware, Phishing, Ransomware, Viruses, Trojans",
+  "Encryption: Symmetric (AES), Asymmetric (RSA)",
+  "Authentication: Passwords, OTP, Biometric",
+  "Firewalls, Antivirus, VPNs",
+  "Cybersecurity best practices: Updates, Strong passwords, Backup, Safe browsing"
+],
+Web_Technologies: [
+    "Definition: Tools and languages to create websites and web applications.",
+    "Explanation: Web development includes front-end (client-side) and back-end (server-side).",
+    "Key Points:",
+    "Front-end: HTML, CSS, JavaScript, React, Angular",
+    "Back-end: Node.js, PHP, Python (Django, Flask), Java (Spring)",
+    "Database: MySQL, MongoDB",
+    "HTTP Methods: GET, POST, PUT, DELETE",
+    "Web Hosting & Domains"
+  ],
+  
+  Software_Engineering: [
+    "Definition: Systematic design, development, testing, and maintenance of software.",
+    "Explanation: Ensures software quality, efficiency, and reliability.",
+    "Key Points:",
+    "SDLC: Software Development Life Cycle (Requirement, Design, Coding, Testing, Deployment, Maintenance)",
+    "Models: Waterfall, Agile, Spiral, V-Model",
+    "Version Control: Git, GitHub, GitLab",
+    "Testing: Unit, Integration, System, Acceptance"
+  ],
+  
+  Artificial_Intelligence_and_ML: [
+    "Definition: AI is simulation of human intelligence by machines; ML is subset where systems learn from data.",
+    "Explanation: Used in data analysis, predictions, robotics, automation, natural language processing.",
+    "Key Points:",
+    "Types of AI: Narrow AI, General AI, Super AI",
+    "Machine Learning: Supervised, Unsupervised, Reinforcement",
+    "Deep Learning: Neural Networks, CNN, RNN",
+    "Applications: Chatbots, Recommendation systems, Image recognition, Self-driving cars"
+  ]
+},
+
+
+};
+
+function showNotes(subject) {
+  const notesDiv = document.getElementById("notes");
+  notesDiv.innerHTML = ""; // clear old notes
+  
+  if (notes[subject]) {
+    for (let topic in notes[subject]) {
+      const heading = document.createElement("h2");
+      heading.innerText = topic;
+      notesDiv.appendChild(heading);
+      
+      const list = document.createElement("ul");
+      notes[subject][topic].forEach(item => {
+        const li = document.createElement("li");
+        li.innerText = item;
+        list.appendChild(li);
+      });
+      notesDiv.appendChild(list);
+    }
+  }
+}
+</script> </body> </html>

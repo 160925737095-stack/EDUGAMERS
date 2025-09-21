@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WELCOME TO Quiz</title>
+<style>
+ body { font-family: Arial, Helvetica, sans-serif, sans-serif; background: skyblue; text-align: center; padding: 20px;
+  font-size: 16px;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(270deg,pink, #00BFFF, #1C86EE, brown);
+    background-size: 800% 800%;
+    animation: gradientAnimation 15s ease infinite;
+   
+ }
+  h1 { color: #9E4600; }
+  select, button { padding: 10px 15px; font-size: 16px; margin: 10px; border-radius: 5px; cursor: pointer;
+  border-radius: 30px;
+  background-color: palevioletred;
+  }
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+}
+.container {
+  min-height: 400px; /* adjust as needed */
+}
+h2{
+font-size: 70px;          /* Big and fat */
+  font-weight: 100#5B36C30;         /* Extra bold */
+  color: #ffdd57;   
+  transition: transform 0.3s;
+}
+  button { background-color: #3498db; color: white; border: none;
+  border-radius: 30px;}
+  button:hover { background-color: #2980b9; }
+  .question { background-color: burlywood; margin: 10px auto; padding: 15px; width: 80%; border-radius: 30px; text-align: left; }
+  .options label { display: block; margin: 5px 0; cursor: pointer;
+  border-radius: 30px;}
+  
+</style>
+</head>
+<body>
+
+<h1>WELCOME TO Quiz</h1>
+
+<div>
+  <select id="subjectSelect" onchange="showTopics()">
+    <option value="">Select Subject</option>
+    <option value="Mathematics">Mathematics</option>
+    <option value="Physics">Physics</option>
+    <option value="Chemistry">Chemistry</option>
+    <option value="Computer">Computer</option>
+  </select>
+
+  <select id="topicSelect" style="display:none;">
+    <option value="">Select Topic</option>
+  </select>
+
+  <button id="startBtn" style="display:none;" onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<div id="content"></div>
+
+<script>
+const data = {
+  'Mathematics': {
+     
+    'Algebra': [
+      { q: "Solve 2x + 5 = 15", options:["x=5","x=3","x=10","x=8"], answer:"x=5" },
+      { q: "Simplify 4x + 7x", options:["11x","12x","10x","9x"], answer:"11x" },
+      { q: "Solve x^2 = 16", options:["x=4","x=-4","Both 4 & -4","x=0"], answer:"Both 4 & -4" },
+      { q: "Factorize x^2 + 5x + 6", options:["(x+2)(x+3)","(x+1)(x+6)","(x+3)(x+3)","(x+2)(x+2)"], answer:"(x+2)(x+3)" },
+      { q: "Solve 3x - 9 = 0", options:["x=3","x=-3","x=0","x=6"], answer:"x=3" },
+      { q: "Simplify 2(x+3)+4", options:["2x+10","2x+7","2x+6","2x+8"], answer:"2x+10" },
+      { q: "Solve 5x = 25", options:["x=5","x=10","x=25","x=0"], answer:"x=5" },
+      { q: "Simplify: 6x - 2x", options:["4x","3x","6x","2x"], answer:"4x" },
+      { q: "Factorize x^2 - 9", options:["(x+3)(x-3)","(x+9)(x-1)","(x+3)(x+3)","x(x-9)"], answer:"(x+3)(x-3)" },
+      { q: "Solve x/2 + 7 = 12", options:["x=10","x=12","x=5","x=7"], answer:"x=10" }
+    ],
+    'Arithmetic': [
+    { q: "What is 25 + 37?", options:["52","62","72","82"], answer:"62" },
+    { q: "What is 144 ÷ 12?", options:["10","11","12","13"], answer:"12" },
+    { q: "LCM of 6 and 8?", options:["12","24","18","36"], answer:"24" },
+    { q: "15 × 7 equals?", options:["95","105","115","125"], answer:"105" },
+    { q: "HCF of 20 and 30?", options:["5","10","15","20"], answer:"10" },
+    { q: "50% of 200?", options:["50","75","100","150"], answer:"100" },
+    { q: "7² equals?", options:["42","49","56","64"], answer:"49" },
+    { q: "1/4 of 120?", options:["20","25","30","35"], answer:"30" },
+    { q: "Sum of first 10 natural numbers?", options:["45","50","55","60"], answer:"55" },
+    { q: "125 ÷ 5?", options:["20","25","30","35"], answer:"25" }
+  ],
+    'Trigonometry': [
+    { q: "sin 30° = ?", options:["1/2","√3/2","1","0"], answer:"1/2" },
+    { q: "cos 60° = ?", options:["1/2","√3/2","1","0"], answer:"1/2" },
+    { q: "tan 45° = ?", options:["1","0","√3","Undefined"], answer:"1" },
+    { q: "sin²θ + cos²θ = ?", options:["1","0","2","θ"], answer:"1" },
+    { q: "cot 45° = ?", options:["1","0","√3","Undefined"], answer:"1" },
+    { q: "sec 60° = ?", options:["2","1/2","√3","1"], answer:"2" },
+    { q: "cosec 30° = ?", options:["2","1/2","√3","1"], answer:"2" },
+    { q: "tan²θ + 1 = ?", options:["sec²θ","cosec²θ","1","θ"], answer:"sec²θ" },
+    { q: "sin 90° = ?", options:["1","0","1/2","√3/2"], answer:"1" },
+    { q: "cos 0° = ?", options:["1","0","1/2","√3/2"], answer:"1" }
+  ],
+
+  'Coordinate Geometry': [
+    { q: "Distance between (0,0) and (3,4)?", options:["5","6","7","4"], answer:"5" },
+    { q: "Midpoint of (0,0) and (2,4)?", options:["(1,2)","(2,2)","(1,3)","(0,2)"], answer:"(1,2)" },
+    { q: "Slope of line joining (0,0) and (2,4)?", options:["2","1","1/2","4"], answer:"2" },
+    { q: "Equation of x-axis?", options:["y=0","x=0","y=x","x=y"], answer:"y=0" },
+    { q: "Equation of y-axis?", options:["x=0","y=0","x=y","y=x"], answer:"x=0" },
+    { q: "Circle with center (0,0) radius 5?", options:["x²+y²=25","x²+y²=5","x²+y²=10","x²+y²=0"], answer:"x²+y²=25" },
+    { q: "Slope of horizontal line?", options:["0","1","∞","-1"], answer:"0" },
+    { q: "Slope of vertical line?", options:["∞","0","1","-1"], answer:"∞" },
+    { q: "Midpoint formula?", options:["(x1+x2)/2,(y1+y2)/2","x1+x2,y1+y2","(x1-x2)/2,(y1-y2)/2","x1-x2,y1-y2"], answer:"(x1+x2)/2,(y1+y2)/2" },
+    { q: "Distance formula?", options:["√((x2-x1)²+(y2-y1)²)","x2-x1+y2-y1","(x2+x1)²+(y2+y1)²","√((x2+x1)²+(y2+y1)²)"], answer:"√((x2-x1)²+(y2-y1)²)" }
+  ],
+
+  'Set Theory': [
+    { q: "Union of A={1,2} and B={2,3}?", options:["{1,2,3}","{2}","{1,3}","{}"], answer:"{1,2,3}" },
+    { q: "Intersection of A={1,2} and B={2,3}?", options:["{2}","{1,2,3}","{1}","{}"], answer:"{2}" },
+    { q: "Complement of A={1,2} in U={1,2,3,4}?", options:["{3,4}","{1,2}","{1,3}","{}"], answer:"{3,4}" },
+    { q: "Subset definition?", options:["All elements of A in B","Any element in A","Empty set","None"], answer:"All elements of A in B" },
+    { q: "Empty set symbol?", options:["{}","∅","0","None"], answer:"∅" },
+    { q: "Cardinality of {1,2,3}?", options:["3","2","1","0"], answer:"3" },
+    { q: "Union symbol?", options:["∪","∩","+","×"], answer:"∪" },
+    { q: "Intersection symbol?", options:["∩","∪","+","×"], answer:"∩" },
+    { q: "Difference A-B?", options:["Elements in A not in B","Elements in B not in A","Common elements","None"], answer:"Elements in A not in B" },
+    { q: "Cartesian product A×B?", options:["Pairs (a,b)","Union","Intersection","Difference"], answer:"Pairs (a,b)" }
+  ],
+
+  'Logic': [
+    { q: "Negation of True?", options:["False","True","Depends","0"], answer:"False" },
+    { q: "True AND False?", options:["False","True","0","1"], answer:"False" },
+    { q: "True OR False?", options:["True","False","0","1"], answer:"True" },
+    { q: "Implication True->False?", options:["False","True","Depends","None"], answer:"False" },
+    { q: "Bi-conditional True<->True?", options:["True","False","0","1"], answer:"True" },
+    { q: "NOT False?", options:["True","False","0","1"], answer:"True" },
+    { q: "Converse of p→q?", options:["q→p","p→q","¬p→¬q","None"], answer:"q→p" },
+    { q: "Contrapositive of p→q?", options:["¬q→¬p","q→p","p→q","¬p→¬q"], answer:"¬q→¬p" },
+    { q: "Tautology?", options:["Always True","Always False","Depends","Sometimes"], answer:"Always True" },
+    { q: "Contradiction?", options:["Always False","Always True","Depends","Sometimes"], answer:"Always False" }
+  ],
+
+  'Sequences & Series': [
+    { q: "n-th term of AP a=2, d=3?", options:["a_n = 2+3(n-1)","a_n=2n","a_n=3n","a_n=n+2"], answer:"a_n = 2+3(n-1)" },
+    { q: "Sum of first 5 natural numbers?", options:["15","10","20","5"], answer:"15" },
+    { q: "Sum of first n natural numbers?", options:["n(n+1)/2","n²","n(n-1)/2","n"], answer:"n(n+1)/2" },
+    { q: "3rd term of GP 2,6,18,...?", options:["18","6","2","54"], answer:"18" },
+    { q: "Sum of first 3 terms of GP 2,6,18?", options:["26","28","30","32"], answer:"26" },
+    { q: "Harmonic mean of 2 and 4?", options:["8/3","3","2","4"], answer:"8/3" },
+    { q: "Sum of infinite GP a=1,r=1/2?", options:["2","1","∞","0"], answer:"2" },
+    { q: "nth term of GP?", options:["a r^(n-1)","a n","r^n","a+n"], answer:"a r^(n-1)" },
+    { q: "If a1=1, d=2, 5th term?", options:["9","7","5","11"], answer:"9" },
+    { q: "Sum of 1+2+4+8... 8 terms?", options:["255","256","127","128"], answer:"255" }
+  ],
+
+  'Number Theory': [
+    { q: "Smallest prime number?", options:["2","1","3","0"], answer:"2" },
+    { q: "Prime factorization of 12?", options:["2²×3","2×3²","2×6","3×4"], answer:"2²×3" },
+    { q: "Check co-prime: 8 & 15?", options:["Yes","No","Depends","Cannot"], answer:"Yes" },
+    { q: "Divisibility by 3: 123?", options:["Yes","No","Depends","Cannot"], answer:"Yes" },
+    { q: "Is 1 prime?", options:["No","Yes","Depends","Sometimes"], answer:"No" },
+    { q: "GCD of 18 and 24?", options:["6","12","3","4"], answer:"6" },
+    { q: "LCM of 4 and 5?", options:["20","9","10","15"], answer:"20" },
+    { q: "Mod 7 of 15?", options:["1","0","7","8"], answer:"1" },
+    { q: "Check 19 is prime?", options:["Yes","No","Depends","Cannot"], answer:"Yes" },
+    { q: "Sum of first 5 primes?", options:["28","20","18","25"], answer:"28" }
+  ],
+
+  'Vectors': [
+    { q: "Magnitude of vector (3,4)?", options:["5","7","1","6"], answer:"5" },
+    { q: "Dot product of (1,2).(3,4)?", options:["11","10","12","9"], answer:"11" },
+    { q: "Vector addition (1,2)+(3,4)?", options:["(4,6)","(3,6)","(4,4)","(1,2)"], answer:"(4,6)" },
+    { q: "Cross product exists in?", options:["3D","2D","1D","Any"], answer:"3D" },
+    { q: "Zero vector magnitude?", options:["0","1","∞","Depends"], answer:"0" },
+    { q: "Unit vector length?", options:["1","0","Depends","∞"], answer:"1" },
+    { q: "Scalar multiplication affects?", options:["Magnitude only","Direction only","Both","None"], answer:"Both" },
+    { q: "Direction cosines sum of squares?", options:["1","0","2","Depends"], answer:"1" },
+    { q: "Negative vector opposite to?", options:["Same line, opposite direction","Different line","None","Depends"], answer:"Same line, opposite direction" },
+    { q: "Position vector origin to point (2,3)?", options:["(2,3)","(3,2)","(2,0)","(0,3)"], answer:"(2,3)" }
+  ],
+
+  'Complex Numbers': [
+    { q: "i² = ?", options:["-1","1","0","i"], answer:"-1" },
+    { q: "Conjugate of 2+3i?", options:["2-3i","-2+3i","3+2i","2+3i"], answer:"2-3i" },
+    { q: "Modulus of 3+4i?", options:["5","7","1","6"], answer:"5" },
+    { q: "Polar form of 1+i?", options:["√2∠45°","√2∠30°","1∠45°","2∠45°"], answer:"√2∠45°" },
+    { q: "Real part of 2+3i?", options:["2","3","5","-3"], answer:"2" },
+    { q: "Imaginary part of 2+3i?", options:["3","2","5","-2"], answer:"3" },
+    { q: "i³ = ?", options:["-i","i","1","-1"], answer:"-i" },
+    { q: "i⁴ = ?", options:["1","-1","i","-i"], answer:"1" },
+    { q: "Sum of 2+3i and 1+i?", options:["3+4i","3+3i","2+4i","1+4i"], answer:"3+4i" },
+    { q: "Difference (2+3i)-(1+i)?", options:["1+2i","1+4i","3+2i","2+2i"], answer:"1+2i" }
+  ],
+
+  'Differential Equations': [
+    { q: "dy/dx of y=x²?", options:["2x","x","x²","2"], answer:"2x" },
+    { q: "Equation dy/dx = 0?", options:["y=Constant","y=x","y=x²","y=0"], answer:"y=Constant" },
+    { q: "Equation dy/dx = k y?", options:["y=Ce^(kx)","y=kx","y=k","y=x"], answer:"y=Ce^(kx)" },
+    { q: "Separable equation?", options:["dy/dx=f(x)g(y)","dy/dx=y","dy/dx=x","dy/dx=0"], answer:"dy/dx=f(x)g(y)" },
+    { q: "First order linear ODE?", options:["dy/dx + P(x)y=Q(x)","d²y/dx² + y=0","dy/dx=y²","None"], answer:"dy/dx + P(x)y=Q(x)" },
+    { q: "General solution of dy/dx=0?", options:["y=C","y=x","y=0","y=1"], answer:"y=C" },
+    { q: "dy/dx = 1 ?", options:["y=x+C","y=C","y=x²","y=1"], answer:"y=x+C" },
+    { q: "dy/dx = x ?", options:["y=x²/2+C","y=x","y=2x","y=C"], answer:"y=x²/2+C" },
+    { q: "Integration factor?", options:["e^∫P(x)dx","∫P(x)dx","P(x)","1"], answer:"e^∫P(x)dx" },
+    { q: "dy/dx + y = 0 solution?", options:["y=Ce^(-x)","y=x","y=C","y=e^x"], answer:"y=Ce^(-x)" }
+  ], 
+
+  'Calculus': [
+    { q: "Derivative of x²?", options:["x","2x","x²","2"], answer:"2x" },
+    { q: "Integral of 2x dx?", options:["x²","x","x²+ C","2x²"], answer:"x²+ C" },
+    { q: "Derivative of sin(x)?", options:["cos(x)","-cos(x)","sin(x)","-sin(x)"], answer:"cos(x)" },
+    { q: "Integral of 1/x dx?", options:["ln|x|","x","1/x²","e^x"], answer:"ln|x|" },
+    { q: "Limit of (x²-4)/(x-2) as x→2?", options:["2","4","∞","0"], answer:"4" },
+    { q: "d/dx of e^x?", options:["e^x","x","1","0"], answer:"e^x" },
+    { q: "Integral of cos(x) dx?", options:["sin(x)","-sin(x)","cos(x)","-cos(x)"], answer:"sin(x)" },
+    { q: "Derivative of ln(x)?", options:["1/x","ln(x)","x","e^x"], answer:"1/x" },
+    { q: "Integral of 0 dx?", options:["C","0","x","1"], answer:"C" },
+    { q: "Derivative of x³?", options:["3x²","x²","x³","3x"], answer:"3x²" }
+  ],
+
+  'Statistics': [
+    { q: "Mean of 2,4,6,8,10?", options:["4","5","6","7"], answer:"6" },
+    { q: "Median of 1,3,3,6,7,8,9?", options:["6","7","3","5"], answer:"6" },
+    { q: "Mode of 1,2,2,3,3,3,4?", options:["2","3","1","4"], answer:"3" },
+    { q: "Variance measures?", options:["Spread","Mean","Mode","Sum"], answer:"Spread" },
+    { q: "Standard deviation is?", options:["√variance","variance²","mean","mode"], answer:"√variance" },
+    { q: "Probability of head in coin toss?", options:["1/2","1/4","1/3","1"], answer:"1/2" },
+    { q: "Sum of probabilities of all outcomes?", options:["1","0","Depends","Infinity"], answer:"1" },
+    { q: "Random variable can be?", options:["Discrete or Continuous","Only Discrete","Only Continuous","None"], answer:"Discrete or Continuous" },
+    { q: "P(X) ≥ 0 always?", options:["True","False","Sometimes","Never"], answer:"True" },
+    { q: "Probability of impossible event?", options:["0","1","-1","Cannot"], answer:"0" }
+  ],
+
+  'Matrices': [
+    { q: "Determinant of [[1,2],[3,4]]?", options:["-2","2","1","-1"], answer:"-2" },
+    { q: "Transpose of [[1,2],[3,4]]?", options:["[[1,3],[2,4]]","[[2,1],[4,3]]","[[1,2],[3,4]]","[[4,3],[2,1]]"], answer:"[[1,3],[2,4]]" },
+    { q: "Inverse of [[1,0],[0,1]]?", options:["[[1,0],[0,1]]","[[0,1],[1,0]]","[[1,1],[1,1]]","None"], answer:"[[1,0],[0,1]]" },
+    { q: "Matrix multiplication valid for?", options:["Columns of A = Rows of B","Rows of A = Columns of B","Any matrix","Only square"], answer:"Columns of A = Rows of B" },
+    { q: "Rank of zero matrix?", options:["0","1","Depends","Infinity"], answer:"0" },
+    { q: "Identity matrix has?", options:["1s in diagonal","0s in diagonal","All 1s","All 0s"], answer:"1s in diagonal" },
+    { q: "Trace of [[2,3],[4,5]]?", options:["7","14","10","5"], answer:"7" },
+    { q: "Matrix addition requires?", options:["Same order","Any order","Square only","Rows = Columns"], answer:"Same order" },
+    { q: "Scalar multiplication affects?", options:["All elements","Diagonal only","Trace only","None"], answer:"All elements" },
+    { q: "Inverse exists if?", options:["Det ≠ 0","Det = 0","Square only","Any matrix"], answer:"Det ≠ 0" }
+  ],
+
+  'Probability': [
+    { q: "Probability of rolling 6 on dice?", options:["1/6","1/5","1/4","1/2"], answer:"1/6" },
+    { q: "Probability of even number on dice?", options:["1/2","1/3","1/4","1/6"], answer:"1/2" },
+    { q: "Sum of probabilities of all outcomes?", options:["1","0","Depends","∞"], answer:"1" },
+    { q: "Probability of head in coin toss?", options:["1/2","1/4","1/3","1"], answer:"1/2" },
+    { q: "Impossible event probability?", options:["0","1","-1","Cannot"], answer:"0" },
+    { q: "Certain event probability?", options:["1","0","0.5","∞"], answer:"1" },
+    { q: "Mutually exclusive events?", options:["No common outcome","At least one outcome same","All outcomes same","None"], answer:"No common outcome" },
+    { q: "Complement of event E?", options:["E’","E","E²","None"], answer:"E’" },
+    { q: "Independent events?", options:["P(A∩B) = P(A)*P(B)","P(A∩B)=0","P(A∪B)=1","None"], answer:"P(A∩B) = P(A)*P(B)" },
+    { q: "Random variable type?", options:["Discrete or Continuous","Only Discrete","Only Continuous","None"], answer:"Discrete or Continuous" }
+  ],
+
+  'Advanced': [
+    { q: "Complex number i²=?", options:["-1","1","0","i"], answer:"-1" },
+    { q: "Polar form of 1+i?", options:["√2∠45°","√2∠30°","1∠45°","2∠45°"], answer:"√2∠45°" },
+    { q: "Euler formula?", options:["e^(iθ)=cosθ + i sinθ","e^x = ln x","e^i =1","None"], answer:"e^(iθ)=cosθ + i sinθ" },
+    { q: "Laplace of 1?", options:["1/s","s","s²","0"], answer:"1/s" },
+    { q: "Derivative of e^x?", options:["e^x","x","1","0"], answer:"e^x" },
+    { q: "Fourier series represents?", options:["Periodic function","Any function","Random numbers","Polynomial"], answer:"Periodic function" },
+    { q: "Gradient vector points?", options:["Max increase","Min increase","Zero","Any"], answer:"Max increase" },
+    { q: "Divergence of constant vector?", options:["0","1","Depends","Infinity"], answer:"0" },
+    { q: "Curl of gradient?", options:["0","1","Depends","Infinity"], answer:"0" },
+    { q: "Integral of 1/x dx?", options:["ln|x|","x","1/x²","e^x"], answer:"ln|x|" }
+  ],
+    'Geometry': [
+      { q: "Area of triangle with base 5, height 10?", options:["25","50","30","20"], answer:"25" },
+      { q: "Sum of angles in a triangle?", options:["180","360","90","270"], answer:"180" },
+      { q: "Area of square with side 6?", options:["36","30","12","24"], answer:"36" },
+      { q: "Perimeter of rectangle 5x10?", options:["30","25","20","50"], answer:"30" },
+      { q: "Area of circle with radius 7?", options:["154","144","49","100"], answer:"154" },
+      { q: "Pythagoras theorem applies to?", options:["Right triangle","Equilateral","Square","Circle"], answer:"Right triangle" },
+      { q: "Number of diagonals in pentagon?", options:["5","10","3","7"], answer:"5" },
+      { q: "Sum of interior angles of hexagon?", options:["720","540","360","600"], answer:"720" },
+      { q: "Perimeter of square with side 9?", options:["36","18","27","45"], answer:"36" },
+      { q: "Area of rectangle 8x5?", options:["40","13","20","35"], answer:"40" }
+    ]
+  },
+  'Computer' :{
+    'Computer_Basics': [
+  { q: "Which is an input device?", options:["Keyboard","Monitor","Printer","Speaker"], answer:"Keyboard" },
+  { q: "CPU stands for?", options:["Central Processing Unit","Computer Primary Unit","Central Power Unit","Control Processing Unit"], answer:"Central Processing Unit" },
+  { q: "Which is volatile memory?", options:["RAM","ROM","HDD","SSD"], answer:"RAM" },
+  { q: "Which is non-volatile memory?", options:["ROM","RAM","Cache","Register"], answer:"ROM" },
+  { q: "Which is output device?", options:["Printer","Mouse","Keyboard","Scanner"], answer:"Printer" },
+  { q: "Which is secondary storage?", options:["HDD","RAM","Cache","Register"], answer:"HDD" },
+  { q: "Which software manages hardware?", options:["OS","Application software","Compiler","Utility software"], answer:"OS" },
+  { q: "Binary number system uses how many digits?", options:["2","8","10","16"], answer:"2" },
+  { q: "Full form of BIOS?", options:["Basic Input Output System","Binary Input Output System","Basic Internal Operating System","Binary Internal Operating System"], answer:"Basic Input Output System" },
+  { q: "Which is faster memory?", options:["Cache","RAM","ROM","HDD"], answer:"Cache" }
+],
+'Operating_Systems': [
+  { q: "Which is not an OS?", options:["MS Word","Windows","Linux","macOS"], answer:"MS Word" },
+  { q: "OS manages?", options:["Hardware","Software","Both","None"], answer:"Both" },
+  { q: "Example of real-time OS?", options:["VxWorks","Windows 10","Linux","macOS"], answer:"VxWorks" },
+  { q: "Function of OS does not include?", options:["Compiling code","Memory management","Process manage","File management"], answer:"Compiling code" },
+  { q: "Multi-user OS allows?", options:["Multiple users at same time","Single user","Multiple CPUs only","None"], answer:"Multiple users at same time" },
+  { q: "Which OS is open-source?", options:["Linux","Windows","macOS","DOS"], answer:"Linux" },
+  { q: "Scheduler in OS handles?", options:["Processes","Memory","Files","Input/Output"], answer:"Processes" },
+  { q: "Which OS is for mobile devices?", options:["Android","Linux","Windows","Unix"], answer:"Android" },
+  { q: "Booting means?", options:["Starting computer","Shutting down","Updating software","Installing program"], answer:"Starting computer" },
+  { q: "Virtual memory uses?", options:["HDD as RAM","RAM as HDD","CPU as RAM","Cache as RAM"], answer:"HDD as RAM" }
+],
+'Programming_Fundamentals': [
+  { q: "Which is a high-level language?", options:["Python","Assembly","Machine code","Binary"], answer:"Python" },
+  { q: "Loop that executes at least once?", options:["do-while","for","while","if"], answer:"do-while" },
+  { q: "Which is a data type?", options:["int","if","for","while"], answer:"int" },
+  { q: "Operator for logical AND?", options:["&&","||","!","=="], answer:"&&" },
+  { q: "Function calling itself?", options:["Recursion","Iteration","Loop","Condition"], answer:"Recursion" },
+  { q: "Which symbol is for assignment?", options:["=","==","!","<"], answer:"=" },
+  { q: "Conditional statement in code?", options:["if-else","for","while","switch"], answer:"if-else" },
+  { q: "Which is interpreted language?", options:["Python","C++","C","Java"], answer:"Python" },
+  { q: "Which is compiled language?", options:["C++","Python","HTML","JavaScript"], answer:"C++" },
+  { q: "Operator precedence used for?", options:["Order of operations","Memory allocation","Loop execution","Function call"], answer:"Order of operations" }
+],
+'Data_Structures': [
+  { q: "Stack follows?", options:["LIFO","FIFO","Priority","Random"], answer:"LIFO" },
+  { q: "Queue follows?", options:["FIFO","LIFO","Priority","Random"], answer:"FIFO" },
+  { q: "Which is dynamic data structure?", options:["Linked List","Array","String","Integer"], answer:"Linked List" },
+  { q: "Binary tree node can have max?", options:["2 children","3 children","1 child","4 children"], answer:"2 children" },
+  { q: "Graph consists of?", options:["Vertices and edges","Rows and columns","Nodes only","Edges only"], answer:"Vertices and edges" },
+  { q: "Which is fastest access?", options:["Array","Linked List","Queue","Stack"], answer:"Array" },
+  { q: "Hash table uses?", options:["Key-value","Index-value","Node-edge","Vertex-edge"], answer:"Key-value" },
+  { q: "Stack operation to remove element?", options:["pop","push","enqueue","dequeue"], answer:"pop" },
+  { q: "Queue operation to add element?", options:["enqueue","push","pop","dequeue"], answer:"enqueue" },
+  { q: "Circular queue solves?", options:["Wasted space","Stack overflow","Memory leak","None"], answer:"Wasted space" }
+],
+'Algorithms': [
+  { q: "Which is O(n log n) sorting?", options:["Merge Sort","Bubble Sort","Selection Sort","Insertion Sort"], answer:"Merge Sort" },
+  { q: "Linear search complexity?", options:["O(n)","O(log n)","O(1)","O(n^2)"], answer:"O(n)" },
+  { q: "Binary search requires?", options:["Sorted array","Unsorted array","Linked list","Graph"], answer:"Sorted array" },
+  { q: "Divide and Conquer example?", options:["Quick Sort","Bubble Sort","Insertion Sort","Selection Sort"], answer:"Quick Sort" },
+  { q: "Recursion used in?", options:["Factorial","Linear Search","Queue","Stack"], answer:"Factorial" },
+  { q: "Greedy algorithm used in?", options:["Minimum Spanning Tree","Binary Search","DFS","Queue"], answer:"Minimum Spanning Tree" },
+  { q: "Time complexity of Bubble Sort?", options:["O(n^2)","O(n log n)","O(n)","O(1)"], answer:"O(n^2)" },
+  { q: "Dynamic Programming avoids?", options:["Recomputing subproblems","Sorting","Searching","Stack overflow"], answer:"Recomputing subproblems" },
+  { q: "DFS stands for?", options:["Depth First Search","Data Flow Search","Direct File Search","Dynamic Function Search"], answer:"Depth First Search" },
+  { q: "BFS stands for?", options:["Breadth First Search","Binary First Search","Best Fit Search","Block File Search"], answer:"Breadth First Search" }
+],
+'Databases': [
+  { q: "SQL stands for?", options:["Structured Query Language","Simple Query Language","Standard Question Language","Structured Quick Language"], answer:"Structured Query Language" },
+  { q: "Primary key is?", options:["Unique identifier","Foreign key","Duplicate value","Column name"], answer:"Unique identifier" },
+  { q: "Foreign key links?", options:["Two tables","Columns in same table","Rows in same table","None"], answer:"Two tables" },
+  { q: "Command to retrieve data?", options:["SELECT","INSERT","UPDATE","DELETE"], answer:"SELECT" },
+  { q: "Command to add new record?", options:["INSERT","SELECT","UPDATE","DELETE"], answer:"INSERT" },
+  { q: "Normalization reduces?", options:["Data redundancy","Data size","Processing speed","None"], answer:"Data redundancy" },
+  { q: "SQL for deletion?", options:["DELETE","DROP","REMOVE","TRUNCATE"], answer:"DELETE" },
+  { q: "Which is NoSQL DB?", options:["MongoDB","MySQL","PostgreSQL","Oracle"], answer:"MongoDB" },
+  { q: "JOIN combines?", options:["Two tables","Two columns","Two rows","Two databases"], answer:"Two tables" },
+  { q: "Constraint to avoid null?", options:["NOT NULL","PRIMARY KEY","FOREIGN KEY","DEFAULT"], answer:"NOT NULL" }
+]
+    
+    
+  },
+  
+    'Physics': {
+   'Mechanics': [
+  { q: "Unit of force?", options:["Newton","Joule","Watt","Pascal"], answer:"Newton" },
+  { q: "Equation of Newton’s 2nd law?", options:["F=ma","E=mc²","V=IR","P=VI"], answer:"F=ma" },
+  { q: "Projectile motion path is?", options:["Parabola","Circle","Straight line","Ellipse"], answer:"Parabola" },
+  { q: "Work done formula?", options:["Force × Distance","Mass × Velocity","Power × Time","Energy × Time"], answer:"Force × Distance" },
+  { q: "Momentum formula?", options:["mv","ma","Fv","Pt"], answer:"mv" },
+  { q: "SI unit of energy?", options:["Joule","Newton","Watt","Erg"], answer:"Joule" },
+  { q: "Friction is a?", options:["Contact force","Non-contact force","Magnetic force","Electrostatic force"], answer:"Contact force" },
+  { q: "1 horsepower = ?", options:["746 W","1000 W","550 W","500 W"], answer:"746 W" },
+  { q: "Acceleration due to gravity on Earth?", options:["9.8 m/s²","10 m/s²","9.2 m/s²","8.9 m/s²"], answer:"9.8 m/s²" },
+  { q: "Impulse = ?", options:["Force × Time","Mass × Distance","Energy × Time","Power × Time"], answer:"Force × Time" }
+],
+'Gravitation': [
+  { q: "Newton’s law of gravitation formula?", options:["F = Gm₁m₂/r²","F = ma","E = mc²","P = VI"], answer:"F = Gm₁m₂/r²" },
+  { q: "Acceleration due to gravity on Earth?", options:["9.8 m/s²","10 m/s²","8 m/s²","9.2 m/s²"], answer:"9.8 m/s²" },
+  { q: "Escape velocity on Earth?", options:["11.2 km/s","8 km/s","9.8 km/s","12 km/s"], answer:"11.2 km/s" },
+  { q: "Value of G (gravitational constant)?", options:["6.67×10^-11 Nm²/kg²","9.8 m/s²","3×10^8 m/s","1.6×10^-19 C"], answer:"6.67×10^-11 Nm²/kg²" },
+  { q: "Shape of Earth’s orbit around Sun?", options:["Ellipse","Circle","Parabola","Hyperbola"], answer:"Ellipse" },
+  { q: "Weight is?", options:["Force of gravity","Mass","Inertia","Momentum"], answer:"Force of gravity" },
+  { q: "Kepler’s 1st law states?", options:["Planets move in elliptical orbits","Equal areas in equal times","T² ∝ r³","Force = ma"], answer:"Planets move in elliptical orbits" },
+  { q: "Geostationary satellite period?", options:["24 hours","12 hours","1 hour","30 days"], answer:"24 hours" },
+  { q: "Unit of gravitational potential?", options:["J/kg","J","N","W"], answer:"J/kg" },
+  { q: "g at Earth’s center?", options:["0","9.8","4.9","Infinite"], answer:"0" }
+],
+
+'Oscillations': [
+  { q: "Simple harmonic motion example?", options:["Pendulum","Car motion","Projectile","Free fall"], answer:"Pendulum" },
+  { q: "Time period of pendulum depends on?", options:["Length","Mass","Amplitude","Weight"], answer:"Length" },
+  { q: "Frequency formula?", options:["f = 1/T","f = vλ","f = ma","f = P/t"], answer:"f = 1/T" },
+  { q: "Restoring force in SHM is?", options:["∝ displacement","∝ velocity","∝ acceleration","∝ energy"], answer:"∝ displacement" },
+  { q: "Phase difference in SHM is measured in?", options:["Radians","Meters","Seconds","Joules"], answer:"Radians" },
+  { q: "Resonance occurs when?", options:["Natural frequency = driving frequency","Amplitude = velocity","Force = mass","Energy = work"], answer:"Natural frequency = driving frequency" },
+  { q: "Graph of SHM displacement?", options:["Sine wave","Straight line","Parabola","Step"], answer:"Sine wave" },
+  { q: "SI unit of frequency?", options:["Hertz","Joule","Newton","Pascal"], answer:"Hertz" },
+  { q: "Energy in SHM alternates between?", options:["Kinetic & Potential","Heat & Work","Mass & Energy","Light & Sound"], answer:"Kinetic & Potential" },
+  { q: "Damping reduces?", options:["Amplitude","Frequency","Time period","Mass"], answer:"Amplitude" }
+],
+
+'Electrostatics': [
+  { q: "Charge of electron?", options:["-1.6×10^-19 C","+1.6×10^-19 C","0","1 C"], answer:"-1.6×10^-19 C" },
+  { q: "Like charges?", options:["Repel","Attract","Neutralize","Explode"], answer:"Repel" },
+  { q: "Coulomb’s law formula?", options:["F = kq₁q₂/r²","F = ma","V = IR","E = mc²"], answer:"F = kq₁q₂/r²" },
+  { q: "SI unit of electric field?", options:["N/C","Coulomb","Ampere","Volt"], answer:"N/C" },
+  { q: "SI unit of potential difference?", options:["Volt","Ohm","Watt","Coulomb"], answer:"Volt" },
+  { q: "Capacitance unit?", options:["Farad","Henry","Tesla","Joule"], answer:"Farad" },
+  { q: "Gauss’s law relates field and?", options:["Charge","Mass","Velocity","Energy"], answer:"Charge" },
+  { q: "Permittivity of free space ε₀?", options:["8.85×10^-12 C²/N·m²","9.8 m/s²","6.67×10^-11","3×10^8"], answer:"8.85×10^-12 C²/N·m²" },
+  { q: "Work done in moving charge q in potential V?", options:["qV","V/I","P/t","IV"], answer:"qV" },
+  { q: "Capacitor stores?", options:["Charge","Force","Current","Resistance"], answer:"Charge" }
+],
+'Waves & Sound': [
+  { q: "Speed of sound in air?", options:["343 m/s","300 m/s","1500 m/s","299792458 m/s"], answer:"343 m/s" },
+  { q: "SI unit of frequency?", options:["Hertz","Decibel","Watt","Newton"], answer:"Hertz" },
+  { q: "Longitudinal waves example?", options:["Sound","Light","Radio","X-rays"], answer:"Sound" },
+  { q: "Pitch depends on?", options:["Frequency","Amplitude","Speed","Wavelength"], answer:"Frequency" },
+  { q: "Loudness depends on?", options:["Amplitude","Frequency","Wavelength","Velocity"], answer:"Amplitude" },
+  { q: "Doppler effect is change in?", options:["Frequency","Speed","Mass","Force"], answer:"Frequency" },
+  { q: "SI unit of sound intensity?", options:["W/m²","J/s","Pa","Hz"], answer:"W/m²" },
+  { q: "Echo time gap at 343 m/s and 343 m distance?", options:["2 sec","1 sec","0.5 sec","0.2 sec"], answer:"2 sec" },
+  { q: "Ultrasound frequency?", options:[">20 kHz","<20 Hz","20-20000 Hz",">200 Hz"], answer:">20 kHz" },
+  { q: "Wave speed formula?", options:["v = fλ","v = λ/t","v = Ft","v = E/m"], answer:"v = fλ" }
+],
+
+'Heat & Thermodynamics': [
+  { q: "SI unit of temperature?", options:["Kelvin","Celsius","Fahrenheit","Joule"], answer:"Kelvin" },
+  { q: "Boiling point of water in Kelvin?", options:["373","100","273","273.15"], answer:"373" },
+  { q: "Zeroth law of thermodynamics deals with?", options:["Thermal equilibrium","Energy conservation","Entropy","Heat engines"], answer:"Thermal equilibrium" },
+  { q: "Heat transfer without medium?", options:["Radiation","Conduction","Convection","Reflection"], answer:"Radiation" },
+  { q: "Work done in isothermal process?", options:["W = nRT ln(V₂/V₁)","W = PΔV","W = Fd","W = Pt"], answer:"W = nRT ln(V₂/V₁)" },
+  { q: "Carnot engine efficiency formula?", options:["1 - T₂/T₁","W/Q","P/V","Q/T"], answer:"1 - T₂/T₁" },
+  { q: "SI unit of heat?", options:["Joule","Calorie","Watt","Newton"], answer:"Joule" },
+  { q: "Change of solid to liquid?", options:["Fusion","Evaporation","Sublimation","Condensation"], answer:"Fusion" },
+  { q: "Entropy is measure of?", options:["Disorder","Energy","Work","Heat"], answer:"Disorder" },
+  { q: "1 calorie = ?", options:["4.18 J","10 J","1 J","2 J"], answer:"4.18 J" }
+],
+
+'Optics': [
+  { q: "Speed of light in vacuum?", options:["3×10^8 m/s","3×10^6 m/s","3×10^5 km/s","Both A & C"], answer:"Both A & C" },
+  { q: "Mirror used in car headlights?", options:["Concave","Convex","Plane","Cylindrical"], answer:"Concave" },
+  { q: "Lens formula?", options:["1/f = 1/v - 1/u","f = uv/(u+v)","P = 100/f","Both A & B"], answer:"1/f = 1/v - 1/u" },
+  { q: "SI unit of power of lens?", options:["Dioptre","Watt","Newton","Joule"], answer:"Dioptre" },
+  { q: "Total internal reflection occurs when?", options:["Light goes from denser to rarer medium","Rarer to denser","Vacuum to air","Air to vacuum"], answer:"Light goes from denser to rarer medium" },
+  { q: "Critical angle definition?", options:["Angle of incidence for 90° refraction","Angle of refraction for 90° incidence","Angle of reflection","None"], answer:"Angle of incidence for 90° refraction" },
+  { q: "Dispersion of light splits into?", options:["7 colors","3 colors","5 colors","Infinite"], answer:"7 colors" },
+  { q: "Rainbow is due to?", options:["Dispersion","Reflection","Refraction","All"], answer:"All" },
+  { q: "Optical fiber works on?", options:["Total internal reflection","Diffraction","Refraction","Interference"], answer:"Total internal reflection" },
+  { q: "Magnification formula?", options:["M = v/u","M = hi/ho","M = -v/u","All"], answer:"All" }
+],
+
+'Electricity & Magnetism': [
+  { q: "SI unit of charge?", options:["Coulomb","Ampere","Volt","Ohm"], answer:"Coulomb" },
+  { q: "Ohm’s law formula?", options:["V = IR","P = VI","Q = It","F = qE"], answer:"V = IR" },
+  { q: "1 kWh = ?", options:["3.6×10^6 J","1000 J","360 J","1 J"], answer:"3.6×10^6 J" },
+  { q: "SI unit of resistance?", options:["Ohm","Volt","Watt","Coulomb"], answer:"Ohm" },
+  { q: "Magnetic field around straight conductor is?", options:["Circular","Linear","Elliptical","Rectangular"], answer:"Circular" },
+  { q: "Right-hand thumb rule used for?", options:["Direction of magnetic field","Current","Voltage","Force"], answer:"Direction of magnetic field" },
+  { q: "Faraday’s law deals with?", options:["Electromagnetic induction","Ohm’s law","Magnetism","Electrostatics"], answer:"Electromagnetic induction" },
+  { q: "Transformer works on?", options:["AC","DC","Both","None"], answer:"AC" },
+  { q: "SI unit of electric power?", options:["Watt","Volt","Ampere","Coulomb"], answer:"Watt" },
+  { q: "Charge of electron?", options:["-1.6×10^-19 C","+1.6×10^-19 C","1 C","-9.8 C"], answer:"-1.6×10^-19 C" }
+],
+
+'Modern Physics': [
+  { q: "Einstein’s mass-energy relation?", options:["E = mc²","F = ma","P = VI","Q = It"], answer:"E = mc²" },
+  { q: "Charge of proton?", options:["+1.6×10^-19 C","-1.6×10^-19 C","0","1 C"], answer:"+1.6×10^-19 C" },
+  { q: "Who discovered electron?", options:["J.J. Thomson","Einstein","Bohr","Newton"], answer:"J.J. Thomson" },
+  { q: "Bohr model explains?", options:["Hydrogen atom","Helium atom","Neutron","Proton"], answer:"Hydrogen atom" },
+  { q: "Photon energy formula?", options:["E = hf","E = mc²","F = ma","Q = It"], answer:"E = hf" },
+  { q: "Radioactivity discovered by?", options:["Henri Becquerel","Newton","Rutherford","Planck"], answer:"Henri Becquerel" },
+  { q: "Half-life definition?", options:["Time for half nuclei to decay","Time for double decay","Time for zero decay","None"], answer:"Time for half nuclei to decay" },
+  { q: "Nuclear fission example?", options:["Uranium-235 splitting","Hydrogen fusion","Sun energy","Alpha decay"], answer:"Uranium-235 splitting" },
+  { q: "Nuclear fusion example?", options:["Sun’s energy","Uranium fission","Carbon dating","Gamma emission"], answer:"Sun’s energy" },
+  { q: "LASER stands for?", options:["Light Amplification by Stimulated Emission of Radiation","Light Absorption by Spontaneous Emission of Radiation","Light Action by Stimulated Energy of Rays","None"], answer:"Light Amplification by Stimulated Emission of Radiation" }
+]
+  },
+
+  'Chemistry': {
+   'Atomic Structure': [
+  { q: "Charge of electron?", options:["-1.6×10^-19 C","+1.6×10^-19 C","0","1 C"], answer:"-1.6×10^-19 C" },
+  { q: "Who discovered proton?", options:["Goldstein","Rutherford","Thomson","Bohr"], answer:"Goldstein" },
+  { q: "Rutherford’s experiment used?", options:["Alpha particles","Beta particles","Gamma rays","Electrons"], answer:"Alpha particles" },
+  { q: "Number of orbitals in n=3 shell?", options:["9","18","3","6"], answer:"9" },
+  { q: "Bohr’s model works well for?", options:["Hydrogen","Helium","Neon","All atoms"], answer:"Hydrogen" },
+  { q: "Quantum number ‘l’ represents?", options:["Subshell","Shell","Orientation","Spin"], answer:"Subshell" },
+  { q: "Maximum electrons in f-subshell?", options:["14","10","8","6"], answer:"14" },
+  { q: "Pauli exclusion principle states?", options:["No 2 electrons have same 4 quantum numbers","Electrons fill lowest energy first","Orbitals fill singly first","Energy is quantized"], answer:"No 2 electrons have same 4 quantum numbers" },
+  { q: "Planck’s constant value?", options:["6.626×10^-34 Js","9.8 m/s²","3×10^8 m/s","1.6×10^-19 C"], answer:"6.626×10^-34 Js" },
+  { q: "Wave-particle duality given by?", options:["de Broglie","Newton","Einstein","Bohr"], answer:"de Broglie" }
+],
+'Fluid_Mechanics': [
+  { q: "SI unit of pressure?", options:["Pascal","Bar","Atmosphere","Newton"], answer:"Pascal" },
+  { q: "Buoyant force acts on?", options:["Submerged object","Air","Vacuum","Only liquids"], answer:"Submerged object" },
+  { q: "Archimedes’ principle states?", options:["Upthrust = weight of displaced fluid","Pressure = F/A","F = ma","Density = mass/volume"], answer:"Upthrust = weight of displaced fluid" },
+  { q: "Continuity equation?", options:["A1v1 = A2v2","P1V1 = P2V2","F = ma","v = u + at"], answer:"A1v1 = A2v2" },
+  { q: "Bernoulli’s equation?", options:["P + ½ρv² + ρgh = constant","F = ma","E = mc²","PV = nRT"], answer:"P + ½ρv² + ρgh = constant" },
+  { q: "Pressure at depth h?", options:["P = P₀ + ρgh","P = F/A","P = ρv²/2","P = mg"], answer:"P = P₀ + ρgh" },
+  { q: "Pascal’s law applies to?", options:["Hydraulic systems","Sound","Light","Vacuum"], answer:"Hydraulic systems" },
+  { q: "SI unit of viscosity?", options:["Pa·s","N/m²","J","W"], answer:"Pa·s" },
+  { q: "Density formula?", options:["ρ = m/V","ρ = F/A","ρ = P/V","ρ = V/m"], answer:"ρ = m/V" },
+  { q: "Pressure in liquid depends on?", options:["Depth, density, gravity","Area","Volume","Temperature"], answer:"Depth, density, gravity" }
+],
+
+'Electromagnetic_Waves': [
+  { q: "Speed of EM waves in vacuum?", options:["3×10^8 m/s","3×10^6 m/s","3×10^5 km/s","Both A & C"], answer:"Both A & C" },
+  { q: "EM waves are?", options:["Transverse","Longitudinal","Both","None"], answer:"Transverse" },
+  { q: "Wave with longest wavelength?", options:["Radio waves","X-rays","Gamma rays","Microwaves"], answer:"Radio waves" },
+  { q: "Energy of photon?", options:["E = hf","E = mc²","F = ma","P = VI"], answer:"E = hf" },
+  { q: "Unit of frequency?", options:["Hertz","Pascal","Joule","Newton"], answer:"Hertz" },
+  { q: "Visible light wavelength?", options:["400–700 nm","10–100 nm","1–10 m",">1 m"], answer:"400–700 nm" },
+  { q: "Gamma rays used in?", options:["Cancer treatment","Radio broadcasting","TV signals","Microwave ovens"], answer:"Cancer treatment" },
+  { q: "EM spectrum arranged by?", options:["Wavelength","Amplitude","Frequency","Phase"], answer:"Wavelength" },
+  { q: "Microwaves used in?", options:["Cooking","X-ray imaging","UV sterilization","Gamma therapy"], answer:"Cooking" },
+  { q: "X-rays discovered by?", options:["Röntgen","Thomson","Faraday","Maxwell"], answer:"Röntgen" }
+],
+
+'Relativity': [
+  { q: "Einstein’s equation?", options:["E = mc²","F = ma","V = IR","P = VI"], answer:"E = mc²" },
+  { q: "Time dilation formula?", options:["t' = t/√(1 - v²/c²)","t = d/v","E = mc²","F = ma"], answer:"t' = t/√(1 - v²/c²)" },
+  { q: "Length contraction formula?", options:["L = L₀√(1 - v²/c²)","L = d/t","E = mc²","F = ma"], answer:"L = L₀√(1 - v²/c²)" },
+  { q: "Relativity affects?", options:["High-speed motion","Stationary objects","Low-speed motion","Gravity only"], answer:"High-speed motion" },
+  { q: "Mass-energy equivalence unit?", options:["Joule","Newton","Watt","Pascal"], answer:"Joule" },
+  { q: "Speed of light symbol?", options:["c","v","u","a"], answer:"c" },
+  { q: "Time slower in?", options:["Moving frame","Stationary frame","Both same","None"], answer:"Moving frame" },
+  { q: "Length shortens in?", options:["Moving frame","Stationary frame","Both same","None"], answer:"Moving frame" },
+  { q: "Rest mass symbol?", options:["m₀","m","M","Mo"], answer:"m₀" },
+  { q: "Relativistic momentum?", options:["p = γmv","p = mv","p = mgh","p = F/A"], answer:"p = γmv" }
+],
+
+'Semiconductors_and_Electronics': [
+  { q: "PN junction diode allows current in?", options:["Forward bias","Reverse bias","Both","None"], answer:"Forward bias" },
+  { q: "Type of semiconductor with donor impurities?", options:["N-type","P-type","Intrinsic","None"], answer:"N-type" },
+  { q: "Type of semiconductor with acceptor impurities?", options:["P-type","N-type","Intrinsic","None"], answer:"P-type" },
+  { q: "Transistor has how many terminals?", options:["3","2","4","5"], answer:"3" },
+  { q: "Logic gate output high when both inputs high?", options:["AND","OR","NOT","NAND"], answer:"AND" },
+  { q: "Logic gate output high when any input high?", options:["OR","AND","NOT","NOR"], answer:"OR" },
+  { q: "Zener diode used for?", options:["Voltage regulation","Amplification","Rectification","Oscillation"], answer:"Voltage regulation" },
+  { q: "Capacitor stores?", options:["Charge","Energy","Current","Magnetic field"], answer:"Charge" },
+  { q: "LED emits light due to?", options:["Electroluminescence","Thermal emission","Incandescence","None"], answer:"Electroluminescence" },
+  { q: "Resistor unit?", options:["Ohm","Volt","Ampere","Watt"], answer:"Ohm" }
+],
+
+'Communication_Systems': [
+  { q: "AM stands for?", options:["Amplitude Modulation","Amplitude Measurement","Analog Modulation","Audio Modulation"], answer:"Amplitude Modulation" },
+  { q: "FM stands for?", options:["Frequency Modulation","Frequency Measurement","Fast Modulation","Frequency Mass"], answer:"Frequency Modulation" },
+  { q: "Satellite orbiting Earth?", options:["Geostationary","Polar","LEO","All"], answer:"All" },
+  { q: "Transmitting antenna converts?", options:["Electrical signal to EM wave","Sound to EM wave","EM wave to sound","Current to Voltage"], answer:"Electrical signal to EM wave" },
+  { q: "Receiver converts?", options:["EM wave to electrical signal","Electrical signal to EM wave","Sound to light","Voltage to current"], answer:"EM wave to electrical signal" },
+  { q: "Bandwidth measured in?", options:["Hz","J","W","V"], answer:"Hz" },
+  { q: "Noise in communication?", options:["Unwanted signal","Original signal","Carrier wave","Modulation"], answer:"Unwanted signal" },
+  { q: "Modulation purpose?", options:["Transmit over long distance","Shorten signal","Change amplitude only","None"], answer:"Transmit over long distance" },
+  { q: "Telecommunication includes?", options:["Phone, TV, Internet","Only TV","Only Radio","Only Phone"], answer:"Phone, TV, Internet" },
+  { q: "Optical fiber uses?", options:["Total internal reflection","Diffraction","Refraction","Interference"], answer:"Total internal reflection" }
+],
+
+'Periodic Table': [
+  { q: "Modern periodic law is based on?", options:["Atomic number","Atomic mass","Density","Electronegativity"], answer:"Atomic number" },
+  { q: "First element in periodic table?", options:["Hydrogen","Helium","Lithium","Carbon"], answer:"Hydrogen" },
+  { q: "Noble gases belong to group?", options:["18","1","17","2"], answer:"18" },
+  { q: "Element with highest electronegativity?", options:["Fluorine","Oxygen","Chlorine","Nitrogen"], answer:"Fluorine" },
+  { q: "Alkali metals belong to group?", options:["1","2","17","18"], answer:"1" },
+  { q: "Transition metals are in?", options:["d-block","s-block","p-block","f-block"], answer:"d-block" },
+  { q: "Atomic radius trend across period?", options:["Decreases","Increases","Same","First increases then decreases"], answer:"Decreases" },
+  { q: "Ionization energy is?", options:["Energy to remove electron","Energy to add electron","Bond energy","Nuclear energy"], answer:"Energy to remove electron" },
+  { q: "Lanthanides belong to?", options:["f-block","d-block","p-block","s-block"], answer:"f-block" },
+  { q: "Group 17 elements called?", options:["Halogens","Alkali metals","Noble gases","Chalcogens"], answer:"Halogens" }
+],
+
+'Chemical Bonding': [
+  { q: "NaCl bond type?", options:["Ionic","Covalent","Metallic","Hydrogen"], answer:"Ionic" },
+  { q: "Bond angle in CH₄?", options:["109.5°","120°","180°","90°"], answer:"109.5°" },
+  { q: "Hybridization in CO₂?", options:["sp","sp²","sp³","dsp²"], answer:"sp" },
+  { q: "Bond order of O₂?", options:["2","3","1","2.5"], answer:"2" },
+  { q: "NH₃ molecular geometry?", options:["Trigonal pyramidal","Tetrahedral","Linear","Trigonal planar"], answer:"Trigonal pyramidal" },
+  { q: "π bond formed by?", options:["Sidewise overlap","End-to-end overlap","Electrostatic attraction","Magnetic attraction"], answer:"Sidewise overlap" },
+  { q: "Number of lone pairs in H₂O?", options:["2","1","3","0"], answer:"2" },
+  { q: "Bond present in H₂?", options:["Single covalent","Double covalent","Triple covalent","Ionic"], answer:"Single covalent" },
+  { q: "Hybridization in BF₃?", options:["sp²","sp³","sp","dsp²"], answer:"sp²" },
+  { q: "VSEPR theory predicts?", options:["Molecular shapes","Atomic mass","Isotopes","Spectra"], answer:"Molecular shapes" }
+],
+
+'States of Matter': [
+  { q: "SI unit of pressure?", options:["Pascal","Bar","Torr","Atm"], answer:"Pascal" },
+  { q: "1 mole of gas at STP volume?", options:["22.4 L","1 L","2.24 L","224 L"], answer:"22.4 L" },
+  { q: "Ideal gas equation?", options:["PV = nRT","F=ma","E=mc²","P=VI"], answer:"PV = nRT" },
+  { q: "Boyle’s law states?", options:["P ∝ 1/V","V ∝ T","V ∝ n","P ∝ T"], answer:"P ∝ 1/V" },
+  { q: "Kinetic theory relates pressure with?", options:["Molecular collisions","Gravity","Temperature","Energy"], answer:"Molecular collisions" },
+  { q: "Real gases deviate due to?", options:["Intermolecular forces","High temperature","Low pressure","Ideal behavior"], answer:"Intermolecular forces" },
+  { q: "van der Waals constant ‘a’ relates to?", options:["Attractive forces","Volume of molecules","Temperature","Pressure"], answer:"Attractive forces" },
+  { q: "van der Waals constant ‘b’ relates to?", options:["Volume of molecules","Attractive forces","Energy","Collisions"], answer:"Volume of molecules" },
+  { q: "Critical temperature is?", options:["Above which gas cannot be liquefied","Below which gas liquefies","Where P=0","Absolute zero"], answer:"Above which gas cannot be liquefied" },
+  { q: "SI unit of gas constant R?", options:["J mol^-1 K^-1","Pa","N/C","kJ"], answer:"J mol^-1 K^-1" }
+]
+  }
+};
+
+function showTopics() {
+  const subject = document.getElementById('subjectSelect').value;
+  const topicSelect = document.getElementById('topicSelect');
+  const startBtn = document.getElementById('startBtn');
+  topicSelect.innerHTML = '<option value="">Select Topic</option>';
+
+  if(subject) {
+    Object.keys(data[subject]).forEach(topic=>{
+      const option = document.createElement('option');
+      option.value = topic;
+      option.text = topic;
+      topicSelect.appendChild(option);
+    });
+    topicSelect.style.display="inline";
+    startBtn.style.display="inline";
+  } else {
+    topicSelect.style.display="none";
+    startBtn.style.display="none";
+  }
+}
+
+function startQuiz() {
+  const subject = document.getElementById('subjectSelect').value;
+  const topic = document.getElementById('topicSelect').value;
+
+  if(!subject || !topic) { alert("Select both subject and topic!"); return; }
+
+  const questions = data[subject][topic];
+  const contentDiv = document.getElementById('content');
+  let html=`<h2>${subject} - ${topic} Quiz</h2><form id="quizForm">`;
+
+  questions.forEach((q,index)=>{
+    html+=`<div class="question"><p>${q.q}</p><div class="options">`;
+    q.options.forEach(opt=>{
+      html+=`<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
+    });
+    html+=`</div></div>`;
+  });
+
+  html+=`<button type="button" onclick="checkAnswers('${subject}','${topic}')">Submit Quiz</button></form>`;
+  contentDiv.innerHTML=html;
+}
+
+function checkAnswers(subject,topic){
+  const form = document.getElementById('quizForm');
+  const questions = data[subject][topic];
+  let score=0;
+  questions.forEach((q,index)=>{
+    const selected = form[`q${index}`]?.value;
+    if(selected===q.answer) score++;
+  });
+  document.getElementById('content').innerHTML=`<h2>Your Score: ${score} / ${questions.length}</h2>`;
+}
+</script>
+
+</body>
+</html>
